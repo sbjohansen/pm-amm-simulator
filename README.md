@@ -130,7 +130,7 @@ This branch adds an **off-chain pm-AMM portability layer** for Polymarket-style 
 - `polymarket_port/clob_simulator.py` → buy-only YES/NO routing simulation against bid/ask
 - `scripts/run_polymarket_port_iterations.py` → iterative parameter runs + outcome simulations
 
-### Run iterative simulations
+### Run iterative simulations (synthetic tape)
 
 ```bash
 python scripts/run_polymarket_port_iterations.py \
@@ -139,8 +139,30 @@ python scripts/run_polymarket_port_iterations.py \
   --out-dir outputs/polymarket_port
 ```
 
+### Run iterative simulations on **real Polymarket data** (paper buys)
+
+```bash
+python scripts/run_polymarket_realdata_iterations.py \
+  --slug btc-updown-15m-1771409700 \
+  --iterations 10 \
+  --trials-per-iteration 150 \
+  --window-steps 60 \
+  --out-dir outputs/polymarket_port_real
+```
+
+Or auto-discover a hot market from latest trades:
+
+```bash
+python scripts/run_polymarket_realdata_iterations.py \
+  --query btc-updown-15m \
+  --iterations 10 \
+  --trials-per-iteration 150
+```
+
 Outputs:
 
+- `real_tape_*.csv` (bucketed real-market tape used for simulation)
+- `raw_trades_*.csv` (filtered trade prints for auditability)
 - `iteration_summary_*.csv` (one row per parameter iteration)
 - `iteration_trials_*.csv` (per-trial details)
 - `best_iteration_*.json` (top candidate configuration)
@@ -148,8 +170,9 @@ Outputs:
 ### Notes
 
 - This is designed for **porting to Polymarket execution bots** (off-chain), not direct smart-contract deployment.
-- Trading logic is intentionally **buy-only YES/NO compatible** with CLOB routing semantics.
-- The pm-AMM state here acts as a **virtual fair-price model** while fills use bid/ask execution prices.
+- Trading logic is intentionally **buy-only YES/NO-compatible** with CLOB routing semantics.
+- The pm-AMM state acts as a **virtual fair-price model** while paper fills are simulated from market data.
+- For historical runs, bid/ask per bucket are inferred from mid + spread proxy (configurable / live-estimated).
 
 ## 📊 Entendendo os Resultados
 

@@ -22,6 +22,14 @@ from .clob_simulator import (
     simulate_single_run,
     run_parameter_iterations,
 )
+from .real_data import (
+    MarketRef,
+    RealDataError,
+    build_market_trade_tape,
+    discover_hot_slug,
+    fetch_recent_global_trades,
+    get_market_by_slug,
+)
 
 __all__ = [
     "phi",
@@ -37,4 +45,10 @@ __all__ = [
     "generate_synthetic_path",
     "simulate_single_run",
     "run_parameter_iterations",
+    "MarketRef",
+    "RealDataError",
+    "build_market_trade_tape",
+    "discover_hot_slug",
+    "fetch_recent_global_trades",
+    "get_market_by_slug",
 ]
