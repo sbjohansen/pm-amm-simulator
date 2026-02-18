@@ -31,3 +31,6 @@ dist/
 build/
 *.egg-info/
 
+# Local simulation outputs
+outputs/
+

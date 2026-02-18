@@ -122,6 +122,35 @@ streamlit run streamlit_app.py
 
 ⚠️ No modo **Static**, os campos `day` e `time` são ignorados durante a simulação.
 
+## 🔁 Polymarket Portability (Off-chain CLOB Simulation)
+
+This branch adds an **off-chain pm-AMM portability layer** for Polymarket-style CLOB execution:
+
+- `polymarket_port/pmamm_math.py` → reusable pm-AMM math utilities
+- `polymarket_port/clob_simulator.py` → buy-only YES/NO routing simulation against bid/ask
+- `scripts/run_polymarket_port_iterations.py` → iterative parameter runs + outcome simulations
+
+### Run iterative simulations
+
+```bash
+python scripts/run_polymarket_port_iterations.py \
+  --iterations 8 \
+  --trials-per-iteration 200 \
+  --out-dir outputs/polymarket_port
+```
+
+Outputs:
+
+- `iteration_summary_*.csv` (one row per parameter iteration)
+- `iteration_trials_*.csv` (per-trial details)
+- `best_iteration_*.json` (top candidate configuration)
+
+### Notes
+
+- This is designed for **porting to Polymarket execution bots** (off-chain), not direct smart-contract deployment.
+- Trading logic is intentionally **buy-only YES/NO compatible** with CLOB routing semantics.
+- The pm-AMM state here acts as a **virtual fair-price model** while fills use bid/ask execution prices.
+
 ## 📊 Entendendo os Resultados
 
 ### Cálculo do Tempo até Expiração (T-t)
